@@ -304,15 +304,17 @@ header .dim { width: 100%; height: 100vh; position: absolute; left: 0; top: 0; b
 
 .main .sec5 .generation_type .plus_btn em:before { width: 24px; height: 4px; background-color: #a8835b; }
 
-.main .sec5 .generation_type .sub_info { text-align: left; width: 230px; height: 306px; background-color: #191d24; }
+.main .sec5 .generation_type .sub_info { width: 230px; height: 306px; text-align: left; background-color: #191d24; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(0, -50%); -moz-transform: translate(0, -50%); -ms-transform: translate(0, -50%); -o-transform: translate(0, -50%); transform: translate(0, -50%); }
 
-.main .sec5 .generation_type .sub_info strong { font-size: 72px; color: #a8835b; }
+.main .sec5 .generation_type .sub_info strong { display: block; padding: 40px 0 0 40px; font-size: 72px; color: #d2ad83; }
 
-.main .sec5 .generation_type .sub_info i { font-size: 18px; color: #a8835b; }
+.main .sec5 .generation_type .sub_info i { margin: 0 0 0 -10px; font-size: 18px; color: #d2ad83; }
 
-.main .sec5 .generation_type .sub_info span { font-size: 15px; font-family: "NanumSquare", Arial, Apple SD Gothic Neo, sans-serif; -webkit-transform: skew(-0.03deg); -moz-transform: skew(-0.03deg); -ms-transform: skew(-0.03deg); -o-transform: skew(-0.03deg); transform: skew(-0.03deg); font-weight: 500; }
+.main .sec5 .generation_type .sub_info span { font-size: 15px; font-family: "NanumSquare", Arial, Apple SD Gothic Neo, sans-serif; -webkit-transform: skew(-0.03deg); -moz-transform: skew(-0.03deg); -ms-transform: skew(-0.03deg); -o-transform: skew(-0.03deg); transform: skew(-0.03deg); }
 
-.main .sec5 .generation_type .sub_info p { font-size: 16px; }
+.main .sec5 .generation_type .sub_info p { padding: 15px 0 0; font-size: 16px; }
+
+.main .sec5 .generation_type .sub_info .bottom_txt { text-align: right; position: absolute; bottom: 40px; right: 30px; }
 
 .main .sec5 .txt_wrap { width: 1580px; position: absolute; bottom: 100px; left: 50%; -webkit-transform: translate(-50%, 0); -moz-transform: translate(-50%, 0); -ms-transform: translate(-50%, 0); -o-transform: translate(-50%, 0); transform: translate(-50%, 0); }
 
