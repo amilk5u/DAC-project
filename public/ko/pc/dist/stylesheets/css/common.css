@@ -278,25 +278,35 @@ header .dim { width: 100%; height: 100vh; position: absolute; left: 0; top: 0; b
 
 .main .sec5 .generation_type svg { position: relative; z-index: 2; }
 
-.main .sec5 .generation_type path { fill: transparent; opacity: 1; cursor: pointer; position: relative; z-index: 10; }
+.main .sec5 .generation_type path, .main .sec5 .generation_type polygon { fill: transparent; opacity: 1; cursor: pointer; position: relative; z-index: 10; }
 
-.main .sec5 .generation_type path:after { width: 70px; height: 70px; content: ""; display: block; position: absolute; left: 150px; top: 180px; }
+.main .sec5 .generation_type path:after, .main .sec5 .generation_type polygon:after { width: 70px; height: 70px; content: ""; display: block; position: absolute; left: 150px; top: 180px; }
 
 .main .sec5 .generation_type li { position: absolute; }
 
-.main .sec5 .generation_type li.active:nth-of-type(1):after { opacity: 1; }
+.main .sec5 .generation_type li.active:nth-of-type(1):after, .main .sec5 .generation_type li.active:nth-of-type(2):after, .main .sec5 .generation_type li.active:nth-of-type(3):after, .main .sec5 .generation_type li.active:nth-of-type(4):after, .main .sec5 .generation_type li.active:nth-of-type(5):after { opacity: .5; }
 
 .main .sec5 .generation_type li.active .plus_btn em { opacity: 1; -webkit-transform: rotate(90deg); -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); -o-transform: rotate(90deg); transform: rotate(90deg); }
+
+.main .sec5 .generation_type li.active .sub_info { opacity: 1; -webkit-transform: translate(0, -50%); -moz-transform: translate(0, -50%); -ms-transform: translate(0, -50%); -o-transform: translate(0, -50%); transform: translate(0, -50%); }
 
 .main .sec5 .generation_type li:after { width: 100%; height: 100%; content: ""; display: block; position: absolute; top: 0; left: 0; }
 
 .main .sec5 .generation_type li:nth-of-type(1) { width: 519px; height: 332px; top: 483px; left: 520px; }
 
-.main .sec5 .generation_type li:nth-of-type(1):after { background: url(../../images/main/C_generation_over.jpg) 50% 50% no-repeat; background-size: cover; opacity: 0; -webkit-transition: all 0.2s ease; -moz-transition: all 0.2s ease; -o-transition: all 0.2s ease; -ms-transition: all 0.2s ease; }
+.main .sec5 .generation_type li:nth-of-type(1):after { background-color: #222; background-size: cover; opacity: 0; -webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; -ms-transition: all 0.4s ease; }
 
-.main .sec5 .generation_type .plus_btn { display: block; width: 70px; height: 70px; background-color: #a8835b; font-size: 32px; color: #fff; top: 150px; left: 200px; font-weight: 800; position: absolute; z-index: 1; padding: 20px 0; text-align: center; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-border-radius: 70px; -moz-border-radius: 70px; border-radius: 70px; }
+.main .sec5 .generation_type li:nth-of-type(1) .plus_btn { top: 160px; left: 295px; }
 
-.main .sec5 .generation_type .plus_btn em { width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-color: #fff; z-index: 2; opacity: 0; -webkit-transition: all 0.2s ease; -moz-transition: all 0.2s ease; -o-transition: all 0.2s ease; -ms-transition: all 0.2s ease; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; }
+.main .sec5 .generation_type li:nth-of-type(2) { width: 274px; height: 219px; top: 281px; left: -117px; opacity: .8; }
+
+.main .sec5 .generation_type li:nth-of-type(2):after { background-color: #222; background-size: cover; opacity: 0; -webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; -ms-transition: all 0.4s ease; }
+
+.main .sec5 .generation_type li:nth-of-type(2) .plus_btn { top: 65px; left: 155px; }
+
+.main .sec5 .generation_type .plus_btn { display: block; width: 70px; height: 70px; background-color: #a8835b; font-size: 32px; color: #fff; font-weight: 800; position: absolute; z-index: 1; padding: 20px 0; text-align: center; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-border-radius: 70px; -moz-border-radius: 70px; border-radius: 70px; }
+
+.main .sec5 .generation_type .plus_btn em { width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-color: #fff; z-index: 2; opacity: 0; -webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; -ms-transition: all 0.4s ease; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; }
 
 .main .sec5 .generation_type .plus_btn em:after, .main .sec5 .generation_type .plus_btn em:before { content: ""; display: block; position: absolute; top: 50%; left: 50%; overflow: hidden; -webkit-transform: translate(-50%, -50%); -moz-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); -o-transform: translate(-50%, -50%); transform: translate(-50%, -50%); }
 
@@ -304,15 +314,15 @@ header .dim { width: 100%; height: 100vh; position: absolute; left: 0; top: 0; b
 
 .main .sec5 .generation_type .plus_btn em:before { width: 24px; height: 4px; background-color: #a8835b; }
 
-.main .sec5 .generation_type .sub_info { width: 230px; height: 306px; text-align: left; background-color: #191d24; position: absolute; top: 50%; left: 50%; -webkit-transform: translate(0, -50%); -moz-transform: translate(0, -50%); -ms-transform: translate(0, -50%); -o-transform: translate(0, -50%); transform: translate(0, -50%); }
+.main .sec5 .generation_type .sub_info { width: 230px; height: 306px; text-align: left; background-color: #191d24; position: absolute; top: 50%; left: 50%; opacity: 0; -webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -o-transition: all 0.4s ease; -ms-transition: all 0.4s ease; -webkit-transform: translate(30px, -50%); -moz-transform: translate(30px, -50%); -ms-transform: translate(30px, -50%); -o-transform: translate(30px, -50%); transform: translate(30px, -50%); }
 
 .main .sec5 .generation_type .sub_info strong { display: block; padding: 40px 0 0 40px; font-size: 72px; color: #d2ad83; }
 
 .main .sec5 .generation_type .sub_info i { margin: 0 0 0 -10px; font-size: 18px; color: #d2ad83; }
 
-.main .sec5 .generation_type .sub_info span { font-size: 15px; font-family: "NanumSquare", Arial, Apple SD Gothic Neo, sans-serif; -webkit-transform: skew(-0.03deg); -moz-transform: skew(-0.03deg); -ms-transform: skew(-0.03deg); -o-transform: skew(-0.03deg); transform: skew(-0.03deg); }
+.main .sec5 .generation_type .sub_info span { display: block; font-size: 15px; font-family: "NanumSquare", Arial, Apple SD Gothic Neo, sans-serif; -webkit-transform: skew(-0.03deg); -moz-transform: skew(-0.03deg); -ms-transform: skew(-0.03deg); -o-transform: skew(-0.03deg); transform: skew(-0.03deg); }
 
-.main .sec5 .generation_type .sub_info p { padding: 15px 0 0; font-size: 16px; }
+.main .sec5 .generation_type .sub_info p { padding: 15px 0 0; font-size: 16px; font-weight: 500; }
 
 .main .sec5 .generation_type .sub_info .bottom_txt { text-align: right; position: absolute; bottom: 40px; right: 30px; }
 

@@ -133,7 +133,7 @@ function main() {
 
         const $generation = $("#generation"),
             $generLi = $("#generation").find("li"),
-            $generPath = $("#generation").find("path");
+            $generPath = $("#generation").find("path, polygon");
 
         console.log($generPath);
 
@@ -145,19 +145,6 @@ function main() {
             let _this = $(this);
             _this.parents("li").removeClass("active");
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
         $window.scroll(function(){
             // let _pallPos = Math.ceil(winSc / 3);
             // let _pallPos1 = Math.ceil(winSc / 5);
