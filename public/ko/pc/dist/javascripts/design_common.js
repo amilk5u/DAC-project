@@ -131,20 +131,37 @@ function main() {
 
     function main() {
 
-        const $generation = $("#generation"),
-            $generLi = $("#generation").find("li"),
-            $generPath = $("#generation").find("path, polygon");
+        const $svgWrap = $(".svg_wrap"),
+            $svgLink = $svgWrap.find("a"),
+            $svgSvg = $svgWrap.find("path,polygon");
 
-        console.log($generPath);
+        const infoWrap = $(".info_wrap"),
+             infoLi = infoWrap.find("li");
 
-        $generPath.mouseenter(function(){
-            let _this = $(this);
-            _this.parents("li").addClass("active");
+        /*
+        1. path 1 번을 호버하면 같은 div 1 번에 active 한다
+        */
+
+        $svgLink.mouseenter(function(){
+            let _this = $(this),
+                _index = _this.index();
+            console.log(_index);
+            infoLi.eq(_index).addClass("active");
         });
-        $generPath.mouseleave(function(){
+        $svgLink.mouseleave(function(){
             let _this = $(this);
-            _this.parents("li").removeClass("active");
+            infoLi.removeClass("active");
         });
+
+
+
+
+
+
+
+
+
+
         $window.scroll(function(){
             // let _pallPos = Math.ceil(winSc / 3);
             // let _pallPos1 = Math.ceil(winSc / 5);
