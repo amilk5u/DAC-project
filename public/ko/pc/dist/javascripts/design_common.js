@@ -87,14 +87,14 @@ function layout() {
                 if (data > 0) {
                     TweenMax.to($header, .5, { y:"-120px" })
                     $header.removeClass("on");
-                    console.log("아래로")
+                    // console.log("아래로")
                 }
             // 올릴 때
             } else {
                 if (data < 0) {
                     TweenMax.to($header, .5, { y:"0" })
                     $header.addClass("on");
-                    console.log("위로")
+                    // console.log("위로")
                 } 
             }
         });
@@ -131,36 +131,61 @@ function main() {
 
     function main() {
 
-        const $svgWrap = $(".svg_wrap"),
-            $svgLink = $svgWrap.find("a"),
-            $svgSvg = $svgWrap.find("path,polygon");
-
-        const infoWrap = $(".info_wrap"),
-             infoLi = infoWrap.find("li");
+        // section 4 (tab menu)
+        const $tabContain = $("#tabContain"),
+             $tabMenu = $tabContain.find(".tab_menu"),
+             $tabMenuLi = $tabContain.find(".tab_menu li"),
+             $tabWrap = $tabContain.find(".tab_wrap"),
+             $tabWrapLi = $tabContain.find(".tab_wrap li");
 
         /*
         1. path 1 번을 호버하면 같은 div 1 번에 active 한다
         */
 
+        $tabMenuLi.on("click",function(){
+            let _this = $(this),
+                _index = _this.index();
+
+            TweenMax.to($tabWrapLi, .2, { display:"none", opacity:0 })
+            TweenMax.to($tabWrapLi.eq(_index), .2, { display:"block", opacity:1 })
+
+
+
+
+        });
+
+        /*
+        * 1. left - 0
+        * 2. left -
+        * 3. left -
+        * 4. left -
+        * 5. left -
+        * */
+
+
+
+
+
+
+
+        // section 5 (svg link)
+        const $svgWrap = $(".svg_wrap"),
+            $svgLink = $svgWrap.find("a"),
+            $svgSvg = $svgWrap.find("path,polygon");
+
+        const infoWrap = $(".info_wrap"),
+            infoLi = infoWrap.find("li");
+
+
         $svgLink.mouseenter(function(){
             let _this = $(this),
                 _index = _this.index();
-            console.log(_index);
             infoLi.eq(_index).addClass("active");
         });
         $svgLink.mouseleave(function(){
             let _this = $(this);
             infoLi.removeClass("active");
         });
-
-
-
-
-
-
-
-
-
 
         $window.scroll(function(){
             // let _pallPos = Math.ceil(winSc / 3);
