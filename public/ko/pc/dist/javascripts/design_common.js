@@ -43,24 +43,28 @@ function layout() {
         let _this = $(this);
         if ( _this.hasClass("active") ) {
             _this.removeClass("active");
-            TweenMax.to($gnbPopup, .8, { left:"-1370px", opacity:0, ease: Power2.easeOut});
-            TweenMax.to($dim, .8, { display:"none", opacity:0 });
+            // TweenMax.to($gnbPopup, .8, { left:"-1370px", opacity:0, ease: Power2.easeOut});
+            TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
+            TweenMax.to($dim, 1, { display:"none", opacity:0 });
         } else {
             _this.addClass("active");
-            TweenMax.to($gnbPopup, 1, { left:"0", opacity:1, ease:Power2.easeOut});
+            // TweenMax.to($gnbPopup, 1, { left:"0", opacity:1, ease:Power2.easeOut});
+            TweenMax.to($(".menu_wrap"), 1, { width:"1370px", opacity:1, ease: Power2.easeOut});
             TweenMax.to($dim, 1, { display:"block", opacity:1 });
         }
     });
     $closeBtn.on("click",function(){
         $gnbBtn.removeClass("active");
-        TweenMax.to($gnbPopup, .8, { left:"-1370px", opacity:0, ease: Power2.easeOut});
-        TweenMax.to($dim, .8, { display:"none", opacity:0 });
+        // TweenMax.to($gnbPopup, .8, { left:"-1370px", opacity:0, ease: Power2.easeOut});
+        TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
+        TweenMax.to($dim, 1, { display:"none", opacity:0 });
     });
 
     $dim.on("click",function(){
         $gnbBtn.removeClass("active");
-        TweenMax.to($gnbPopup, .8, { left:"-1370px", opacity:0, ease: Power2.easeOut});
-        TweenMax.to($dim, .8, { display:"none", opacity:0 });
+        // TweenMax.to($gnbPopup, .8, { left:"-1370px", opacity:0, ease: Power2.easeOut});
+        TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
+        TweenMax.to($dim, 1, { display:"none", opacity:0 });
     });
 
     $window.scroll(function(){
@@ -72,14 +76,13 @@ function layout() {
             // TweenMax.to($header, .5, { y:"-120px" })
             wheelMotion();
         } else {
-
             $("header").removeClass("active");
-            TweenMax.to($header, .5, { y:"0" })
+            // TweenMax.to($header, .5, { y:"0" })
         }
     });
 
     function wheelMotion() {
-        window.addEventListener("wheel", function (e) {
+        /*window.addEventListener("wheel", function (e) {
             const data = e.deltaY;
 
             // 내릴 때
@@ -97,7 +100,7 @@ function layout() {
                     // console.log("위로")
                 } 
             }
-        });
+        });*/
 
 
     /*    let before = 0;
@@ -133,40 +136,24 @@ function main() {
 
         // section 4 (tab menu)
         const $tabContain = $("#tabContain"),
-             $tabMenu = $tabContain.find(".tab_menu"),
-             $tabMenuLi = $tabContain.find(".tab_menu li"),
-             $tabWrap = $tabContain.find(".tab_wrap"),
-             $tabWrapLi = $tabContain.find(".tab_wrap li");
+            $tabMenuLi = $tabContain.find(".tab_menu li"),
+            $tabWrapLi = $tabContain.find(".tab_wrap li");
 
-        /*
-        1. path 1 번을 호버하면 같은 div 1 번에 active 한다
-        */
+        const $tabLine = $tabContain.find(".line i");
+        const leftDat = [0, 297, 607, 891, 1222];
 
-        $tabMenuLi.on("click",function(){
+        $tabMenuLi.on("click", function () {
             let _this = $(this),
                 _index = _this.index();
 
-            TweenMax.to($tabWrapLi, .2, { display:"none", opacity:0 })
-            TweenMax.to($tabWrapLi.eq(_index), .2, { display:"block", opacity:1 })
+            $tabMenuLi.removeClass("active");
+            $tabMenuLi.eq(_index).addClass("active");
+            TweenMax.to($tabWrapLi, .3, {display: "none", opacity: 0});
+            TweenMax.to($tabWrapLi.eq(_index), .3, {display: "block", opacity: 1});
 
-
-
-
+            // 탭라인의 i 의 left 를 index 만큼 옮겨라
+            TweenMax.to($tabLine, .5, {left: leftDat[_index]});
         });
-
-        /*
-        * 1. left - 0
-        * 2. left -
-        * 3. left -
-        * 4. left -
-        * 5. left -
-        * */
-
-
-
-
-
-
 
         // section 5 (svg link)
         const $svgWrap = $(".svg_wrap"),
@@ -190,7 +177,7 @@ function main() {
         $window.scroll(function(){
             // let _pallPos = Math.ceil(winSc / 3);
             // let _pallPos1 = Math.ceil(winSc / 5);
-            // TweenMax.to($("body"), .8, { y:-_pallPos1 /*,ease: Power2.easeOut*/ })
+            // TweenMax.to($("body"), .2, { y:-_pallPos1 /*,ease: Power2.easeOut*/ })
         });
     }
     function sub1() {
