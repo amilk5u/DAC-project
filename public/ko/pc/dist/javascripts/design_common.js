@@ -131,8 +131,57 @@ function layout() {
 function main() {
     if ( $(".container").hasClass("sub1") ) {sub1();}
     if ( $(".container").hasClass("main") ) {main();}
+    if ( $(".container").hasClass("gallery") ) {gallery();}
+
+
+    function gallery() {
+        const gallerySlider = new Swiper("#gallerySlide", {
+            slidesPerView: "auto",
+            spaceBetween: 75,
+            grabCursor: true,
+        });
+    }
 
     function main() {
+        // section 3 (slider)
+        let num = 0;
+
+        const $slideSection = $("#slideSection"),
+            $txtLi = $slideSection.find(".txt_wrap li"),
+            $slide1 = $slideSection.find(".image_1 li"),
+            $slide2 = $slideSection.find(".image_2 li"),
+            $slide3 = $slideSection.find(".image_3 li"),
+            $slide4 = $slideSection.find(".image_4 li"),
+            $slide5 = $slideSection.find(".image_5 li");
+
+        const $slideBtn = $(".slide_btn"),
+              $prevBtn = $slideBtn.find(".prev_btn"),
+              $nextBtn = $slideBtn.find(".next_btn");
+
+
+        $nextBtn.on("click",function(){
+            num ++;
+
+            num = $txtLi.length-1 % num;
+            console.log(num);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // section 4 (tab menu)
         const $tabContain = $("#tabContain"),
@@ -155,24 +204,31 @@ function main() {
             TweenMax.to($tabLine, .5, {left: leftDat[_index]});
         });
 
+
+
+
         // section 5 (svg link)
-        const $svgWrap = $(".svg_wrap"),
-            $svgLink = $svgWrap.find("a"),
-            $svgSvg = $svgWrap.find("path,polygon");
-
-        const infoWrap = $(".info_wrap"),
-            infoLi = infoWrap.find("li");
-
+        const $generation = $("#generation"),
+            $svgLink = $generation.find(".svg_wrap a"),
+            $svgSvg = $generation.find(".svg_wrap path"),
+            $inSvg = $generation.find(".in_svg path"),
+            infoLi = $generation.find(".info_wrap li");
 
         $svgLink.mouseenter(function(){
             let _this = $(this),
                 _index = _this.index();
             infoLi.eq(_index).addClass("active");
+            $inSvg.eq(_index).attr('class', "active path"+_index);
         });
         $svgLink.mouseleave(function(){
-            let _this = $(this);
+            let _this = $(this),
+                _index = _this.index();
             infoLi.removeClass("active");
+            $inSvg.attr('class', "path"+_index);
         });
+
+
+
 
         $window.scroll(function(){
             // let _pallPos = Math.ceil(winSc / 3);
