@@ -129,10 +129,9 @@ function layout() {
 }
 
 function main() {
-    if ( $(".container").hasClass("sub1") ) {sub1();}
-    if ( $(".container").hasClass("main") ) {main();}
-    if ( $(".container").hasClass("gallery") ) {gallery();}
-
+    if ($(".container").hasClass("sub1")) {sub1();}
+    if ($(".container").hasClass("main")) {main();}
+    if ($(".container").hasClass("gallery")) {gallery();}
 
     function gallery() {
         const gallerySlider = new Swiper("#gallerySlide", {
@@ -144,31 +143,66 @@ function main() {
 
     function main() {
         // section 3 (slider)
-        let num = 0;
+        let currentIdx = 0;
+        let motionControl = false;
 
         const $slideSection = $("#slideSection"),
-            $txtLi = $slideSection.find(".txt_wrap li"),
-            $slide1 = $slideSection.find(".image_1 li"),
-            $slide2 = $slideSection.find(".image_2 li"),
-            $slide3 = $slideSection.find(".image_3 li"),
-            $slide4 = $slideSection.find(".image_4 li"),
-            $slide5 = $slideSection.find(".image_5 li");
+            $txtLi = $slideSection.find(".txt_wrap li");
+        const slideImg = $slideSection.find(".slide_img");
 
         const $slideBtn = $(".slide_btn"),
-              $prevBtn = $slideBtn.find(".prev_btn"),
-              $nextBtn = $slideBtn.find(".next_btn");
+            $prevBtn = $slideBtn.find(".prev_btn"),
+            $nextBtn = $slideBtn.find(".next_btn");
 
+        const slideLength = $txtLi.length;
 
-        $nextBtn.on("click",function(){
-            num ++;
-
-            num = $txtLi.length-1 % num;
-            console.log(num);
+        $nextBtn.on("click", function () {
+            if (motionControl === false) {
+                motionControl = true;
+                currentIdx++;
+                currentIdx = currentIdx % slideLength;
+                slidePlay(currentIdx);
+            }
         });
+        $prevBtn.on("click", function () {
+            if (motionControl === false) {
+                motionControl = true;
+                currentIdx--;
+                currentIdx = currentIdx % slideLength;
+                if (currentIdx < 0) {
+                    currentIdx = slideLength - 1;
+                }
+                slidePlay(currentIdx);
+            }
+        });
+        
+        // 첫번째
+        /*function slidePlay(Idx) {
+            TweenMax.to($txtLi, .5, {y: 0, opacity: 0});
+            TweenMax.to(slideImg.find("ul li"), 1, {width:"100%", opacity: 0});
+            TweenMax.to(slideImg.find("ul li img"), 1, {scale:1.2});
+
+            TweenMax.to($txtLi.eq(Idx), .5, {
+                y: "-20px", opacity: 1, delay: .5, onComplete: function () {motionControl = false;}
+            });
+            TweenMax.staggerTo(slideImg.find("ul li:nth-of-type(" + (currentIdx + 1) + ")"), 1, {opacity: 1}, .2);
+            TweenMax.staggerTo(slideImg.find("ul li:nth-of-type(" + (currentIdx + 1) + ") img"), 1.3, {scale: 1}, .2);
+            TweenMax.staggerTo(slideImg.find("ul li:nth-of-type(" + (currentIdx) + ")"), 1, {width: 0,}, .2);
+        }*/
 
 
+        function slidePlay(Idx) {
+            TweenMax.to($txtLi, .5, {y: 0, opacity: 0});
+            TweenMax.to(slideImg.find("ul li"), 1, {width:"100%", opacity: 0});
+            TweenMax.to(slideImg.find("ul li img"), 1, {scale:1.2});
 
-
+            TweenMax.to($txtLi.eq(Idx), .5, {
+                y: "-20px", opacity: 1, delay: .5, onComplete: function () {motionControl = false;}
+            });
+            TweenMax.staggerTo(slideImg.find("ul li:nth-of-type(" + (currentIdx + 1) + ")"), 1, {opacity: 1}, .2);
+            TweenMax.staggerTo(slideImg.find("ul li:nth-of-type(" + (currentIdx + 1) + ") img"), 1.3, {scale: 1}, .2);
+            TweenMax.staggerTo(slideImg.find("ul li:nth-of-type(" + (currentIdx) + ")"), 1, {width: 0,}, .2);
+        }
 
 
 
@@ -205,8 +239,6 @@ function main() {
         });
 
 
-
-
         // section 5 (svg link)
         const $generation = $("#generation"),
             $svgLink = $generation.find(".svg_wrap a"),
@@ -214,36 +246,34 @@ function main() {
             $inSvg = $generation.find(".in_svg path"),
             infoLi = $generation.find(".info_wrap li");
 
-        $svgLink.mouseenter(function(){
+        $svgLink.mouseenter(function () {
             let _this = $(this),
                 _index = _this.index();
             infoLi.eq(_index).addClass("active");
-            $inSvg.eq(_index).attr('class', "active path"+_index);
+            $inSvg.eq(_index).attr('class', "active path" + _index);
         });
-        $svgLink.mouseleave(function(){
+        $svgLink.mouseleave(function () {
             let _this = $(this),
                 _index = _this.index();
             infoLi.removeClass("active");
-            $inSvg.attr('class', "path"+_index);
+            $inSvg.attr('class', "path" + _index);
         });
 
-
-
-
-        $window.scroll(function(){
+        $window.scroll(function () {
             // let _pallPos = Math.ceil(winSc / 3);
             // let _pallPos1 = Math.ceil(winSc / 5);
             // TweenMax.to($("body"), .2, { y:-_pallPos1 /*,ease: Power2.easeOut*/ })
         });
     }
+
     function sub1() {
-        $window.scroll(function(){
+        $window.scroll(function () {
             let _pallPos = Math.ceil(winSc / 3);
             let _pallPos1 = Math.ceil(winSc / 5);
 
-            TweenMax.to($("body"), .8, { y:-_pallPos/*,ease: Power2.easeOut*/ })
-            TweenMax.to($(".box1"), .8, { y:-_pallPos/*,ease: Power2.easeOut, */})
-            TweenMax.to($(".box2"), .8, { y:-_pallPos1/*,ease: Power2.easeOut, */})
+            TweenMax.to($("body"), .8, {y: -_pallPos/*,ease: Power2.easeOut*/})
+            TweenMax.to($(".box1"), .8, {y: -_pallPos/*,ease: Power2.easeOut, */})
+            TweenMax.to($(".box2"), .8, {y: -_pallPos1/*,ease: Power2.easeOut, */})
             // TweenMax.to($(".box img"), .5, { y:-_pallPos1/*,ease: Power2.easeOut, */})
         });
     }
