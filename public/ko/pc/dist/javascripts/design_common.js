@@ -45,7 +45,7 @@ function layout() {
         if ( _this.hasClass("active") ) {
             _this.removeClass("active");
             TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
-            TweenMax.to($dim, 1, { display:"none", opacity:0 });
+            TweenMax.to($dim, .2, { display:"none", opacity:0 });
         } else {
             _this.addClass("active");
             TweenMax.to($(".menu_wrap"), 1, { width:"1370px", opacity:1, ease: Power2.easeOut});
@@ -55,13 +55,13 @@ function layout() {
     $closeBtn.on("click",function(){
         $gnbBtn.removeClass("active");
         TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
-        TweenMax.to($dim, 1, { display:"none", opacity:0 });
+        TweenMax.to($dim, .2, { display:"none", opacity:0 });
     });
 
     $dim.on("click",function(){
         $gnbBtn.removeClass("active");
         TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
-        TweenMax.to($dim, 1, { display:"none", opacity:0 });
+        TweenMax.to($dim, .2, { display:"none", opacity:0 });
     });
 
     $window.scroll(function(){
@@ -90,7 +90,7 @@ function main() {
     if ($(".container").hasClass("sub1")) {sub1();}
     if ($(".container").hasClass("main")) {main();}
     if ($(".container").hasClass("gallery")) {gallery();}
-
+    if ($(".container").hasClass("household")) {household();}
 
     // content motion
     let $motionCont = $(".motion-cont"); // motion-content
@@ -108,7 +108,9 @@ function main() {
                 if ($motionCont.eq(i).hasClass("on") === false) {
                     $motionCont.eq(i).addClass("on");
                     TweenMax.to($motionCont.eq(i), .8, {transform: "translate(0,0)", opacity: 1, ease: Power1.easeOut});
-                    TweenMax.staggerTo($motionCont.eq(i).find(".plus_btn"), .5, {transform: "translate(0,0)", opacity: 1, display: "block"}, .2);
+                    TweenMax.staggerTo($motionCont.eq(i).find(".plus_btn"), .5, {
+                        transform: "translate(0,0)", opacity: 1, display: "block"
+                    }, .2);
                     TweenMax.staggerTo($motionCont.eq(i).find("button"), .5, {opacity: 1}, .05);
                     TweenMax.staggerTo($motionCont.eq(i).find(".small_tit i"), .5, {top: "0"}, .07);
                     TweenMax.staggerTo($motionCont.eq(i).find(".title_txt i"), .5, {top: "0"}, .07);
@@ -122,102 +124,139 @@ function main() {
     });
     motionFun();
 
+    function household() {
+        $("header").find("h1 a").eq(0).find("img").attr("src", "./images/common/logo_c.png");
+        const $household = $(".household"),
+              $selectWrap = $household.find(".select_wrap"),
+              $selectLi = $selectWrap.find("li");
+
+        const $filterWrap = $household.find(".filter_wrap"),
+              $subBox = $filterWrap.find(".sb_box");
+
+        $selectLi.on("click",function(){
+            let _this = $(this),
+                _index = _this.index();
+
+            if ( _this.hasClass("active") === false ) {
+                $selectLi.removeClass("active");
+                TweenMax.to($subBox, .35, { transform:"translate(0,20px)", opacity:0, display:"none" });
+                _this.addClass("active");
+                TweenMax.to($subBox.eq(_index), .35, { transform:"translate(0,0)", opacity:1, display:"block" });
+            } else {
+                _this.removeClass("active");
+                TweenMax.to($subBox, .35, { transform:"translate(0,20px)", opacity:0, display:"none" });
+            }
+        });
+    }
+
     function gallery() {
+        const $gallery = $(".gallery"),
+              $galleryTitle = $gallery.find("h1");
+        TweenMax.to($galleryTitle, 1, { transform: "translate(0,0)", opacity:1 });
+
         const gallerySlider = new Swiper("#gallerySlide", {
             slidesPerView: "auto",
             spaceBetween: 75,
             grabCursor: true,
         });
-        // gallery logo 변경
-        $("header").find("h1 a").eq(0).find("img").attr("src","./images/common/logo_c.png");
 
+        // gallery logo 변경
+        $("header").find("h1 a").eq(0).find("img").attr("src", "./images/common/logo_c.png");
 
         const $slidePopup = $("#slidePopup"),
-              $txtSlide = $slidePopup.find(".txt_wrap li"),
-              $imgSlideWrap = $slidePopup.find(".img_wrap"),
-              $imgSlide = $slidePopup.find(".img_wrap img"),
-              $popClose = $slidePopup.find(".pop_close");
-
-        const $gallerySlide = $(".gallery_slide");
-
-        let _slideNum = 0;
-        let PopMotion = false;
-
-
-/*        $("div").on("mousewheel", function (event, delta) {
-            if (delta > 0) {
-                $(this).css({"background": "red"});
-                $("p").text("마우스 휠을 올렸습니다.");
-            } else if (delta < 0) {
-                $(this).css({"background": "blue"});
-                $("p").text("마우스 휠을 내렸습니다.");
-            }
-        });*/
-
+            $imgSlideWrap = $slidePopup.find(".img_wrap"),
+            $popClose = $slidePopup.find(".pop_close");
+        const $gallerySlide = $(".gallery_slide"),
+              SlideCursor = $(".cursor_item");
+        let _slideNum = 0,
+            PopMotion = false;
+        const $popupWrap = $(".popup_wrap");
+        let $activeSlide;
 
         $slidePopup.on("mousewheel", function (e) {
-            // console.log(e.originalEvent.deltaX)
-            // console.log(e.originalEvent.deltaY)
             const data = e.originalEvent.deltaY;
             if (PopMotion === false) {
-                PopMotion = true;
                 if (data > 0) {
                     // 숫자가 현재 텍스트 갯수의 -1 한 것보다 크거나 같을 때
-                    if (_slideNum >= $txtSlide.length - 1) {
-                        // _slideNum = $txtSlide.length-1
-                        // return false;
-                    } else {
+                    if (_slideNum < $activeSlide.length - 1) {
+                        PopMotion = true;
                         _slideNum++;
+                    } else {
+                        return false;
                     }
                 } else {
                     // 숫자가 0 보다 작거나 같을 때
-                    if (_slideNum <= 0) {
-                        // _slideNum = 0;
-                        // return false;
-                    } else {
+                    if (_slideNum > 0) {
+                        PopMotion = true;
                         _slideNum--;
+                    } else {
+                        return false;
                     }
                 }
                 wheelMotion(_slideNum);
-                console.log(_slideNum);
             }
         });
 
-        function wheelMotion (popIdx) {
+        function wheelMotion(popIdx) {
             let _popImgHeight = $imgSlideWrap.height() * (popIdx);
-            TweenMax.to($(".transform_img"), 1.2, {
+            TweenMax.to($(".transform_img"), .6, {
                 y: -_popImgHeight,
                 ease: Power1.easeOut,
                 onComplete: () => PopMotion = false
             });
-            TweenMax.to($txtSlide, .7, { display:"none", opacity:0 });
-            TweenMax.to($txtSlide.eq(popIdx), 1, { display:"block", opacity:1 });
+            TweenMax.to($activeSlide, .7, {display: "none", opacity: 0});
+            TweenMax.to($activeSlide.eq(popIdx), 1, {display: "block", opacity: 1});
         }
 
-        $gallerySlide.on("click",function(){
+        $gallerySlide.on("click", function () {
             let _this = $(this),
                 _index = _this.index();
-            _slideNum = _index;
-            $("body").css("overflow","hidden");
-            TweenMax.to($slidePopup, .7, { display:"block", opacity:1 });
-            TweenMax.to($txtSlide, .01, { display:"none", opacity:0 });
-            TweenMax.to($txtSlide.eq(_index), 1, { display:"block", opacity:1 });
+
+            $popupWrap.removeClass("active");
+            $popupWrap.eq(_index).addClass("active");
+            $activeSlide = $(".popup_wrap.active").find(".txt_wrap li");
+            $("#wrap").css("margin", "0 17px 0 0");
+            $("body").css("overflow", "hidden");
+            TweenMax.to($(".pop_container"), .7, {width: "100%"})
+            $popupWrap.css("display","none");
+            TweenMax.to($popupWrap.eq(_index), .7, {display: "flex"});
+            _slideNum = 0;
+            $activeSlide.css("display","none");
+            TweenMax.to($activeSlide.eq(_slideNum), 1, {display: "block", opacity: 1});
             TweenMax.to($(".transform_img"), 0.01, {
-                y: -$imgSlideWrap.height() * _index,
+                y: -$imgSlideWrap.height() * _slideNum,
                 onComplete: () => PopMotion = false
             });
         });
 
-        $popClose.on("click",function(){
-            $("body").css("overflow","visible");
-            TweenMax.to($slidePopup, 1, { display:"none", opacity:0 });
+        // popup Close
+        $popClose.on("click", function () {
+            $("body").css("overflow", "visible");
+            TweenMax.to($(".pop_container"), .7, {width: "0"})
+            $("#wrap").css("margin", "0");
+        });
+
+        // Mouse Image Change
+        $gallerySlide.mouseenter(function(){
+            SlideCursor.addClass("active");
+            TweenMax.to(SlideCursor, .2, { display:"block", opacity:1 })
+            document.addEventListener("mousemove", function(e){
+                let x = e.pageX;
+                let y = e.pageY;
+                SlideCursor.css("transform","translate(" + x + "px," + y + "px)");
+            });
+        });
+        // Mouse Image Change
+        $gallerySlide.mouseleave(function(){
+            SlideCursor.removeClass("active");
+            TweenMax.to(SlideCursor, .2, { display:"none", opacity:0 })
         });
     }
 
     function main() {
         const $sec1 = $(".sec1");
         const $titleSpan = $sec1.find("span"),
-              $titleH1 = $sec1.find("h1");
+            $titleH1 = $sec1.find("h1");
         const introMotion = new TimelineMax();
 
         introMotion
@@ -225,6 +264,7 @@ function main() {
             .to($titleH1, 1, {transform: "translate(0,0)", opacity: 1, delay: -.5})
 
         let secH = $(".sec1").height() + $(".sec2").height();
+
         function mouseScrollM() {
             let _pallPos = winSc - secH;
 
@@ -238,11 +278,11 @@ function main() {
 
             // 중간 슬라이드 이미지 페럴럭스
             if (winSc > secH - winH && winSc < secH + winH) {
-                TweenMax.to($(".image_2"), 1, {y: _pallPos/10, ease: Power2.easeOut})
-                TweenMax.to($(".image_3"), 1, {y: -_pallPos/15, ease: Power2.easeOut})
-                TweenMax.to($(".image_4"), 1, {y: -_pallPos/12, ease: Power2.easeOut})
-                TweenMax.to($(".image_5"), 1, {y: _pallPos/8, ease: Power2.easeOut})
-                TweenMax.to($(".small_tit"), 1, {y: -_pallPos/10, ease: Power2.easeOut})
+                TweenMax.to($(".image_2"), 1, {y: _pallPos / 10, ease: Power2.easeOut})
+                TweenMax.to($(".image_3"), 1, {y: -_pallPos / 15, ease: Power2.easeOut})
+                TweenMax.to($(".image_4"), 1, {y: -_pallPos / 12, ease: Power2.easeOut})
+                TweenMax.to($(".image_5"), 1, {y: _pallPos / 8, ease: Power2.easeOut})
+                TweenMax.to($(".small_tit"), 1, {y: -_pallPos / 10, ease: Power2.easeOut})
             }
         }
 
@@ -255,12 +295,12 @@ function main() {
         let currentIdx = 0;
         let motionControl = false;
         const $slideSection = $("#slideSection"),
-              $txtLi = $slideSection.find(".txt_wrap li");
+            $txtLi = $slideSection.find(".txt_wrap li");
         const slideImg = $slideSection.find(".slide_img"),
-              slideUl = $slideSection.find(".image");
+            slideUl = $slideSection.find(".image");
         const $slideBtn = $(".slide_btn"),
-              $prevBtn = $slideBtn.find(".prev_btn"),
-              $nextBtn = $slideBtn.find(".next_btn");
+            $prevBtn = $slideBtn.find(".prev_btn"),
+            $nextBtn = $slideBtn.find(".next_btn");
         const slideLength = $txtLi.length;
         const $slideVideo = $(".slide_video");
 
@@ -296,7 +336,7 @@ function main() {
                 TweenMax.staggerTo(slideUl.find("li:eq(0)"), 1, {opacity: 0}, .15);
                 TweenMax.staggerTo(slideUl.find("li:eq(0) *"), 1.5, {scale: 1.15}, .15);
             }
-            TweenMax.to($txtLi, .75, {transform: "translate(20px,0)",display:"none", opacity: 0});
+            TweenMax.to($txtLi, .75, {transform: "translate(20px,0)", display: "none", opacity: 0});
             TweenMax.staggerTo(slideUl.find("li:eq(" + (currentIdx - 1) + " )"), 1, {opacity: 0}, .15);
             TweenMax.staggerTo(slideUl.find("li:eq(" + (currentIdx + 1) + " )"), 1, {opacity: 0}, .15);
             TweenMax.staggerTo(slideUl.find("li:eq(" + (currentIdx - 1) + " ) *"), 1.5, {scale: 1.15}, .15);
@@ -305,7 +345,7 @@ function main() {
             // active
             $slideVideo[Idx].play();
             TweenMax.to($txtLi.eq(Idx), .8, {
-                transform: "translate(0,0)",display:"block", opacity: 1, delay: .5, onComplete: function () {
+                transform: "translate(0,0)", display: "block", opacity: 1, delay: .5, onComplete: function () {
                     motionControl = false;
                 }
             });
@@ -315,8 +355,8 @@ function main() {
 
         // section 4 (tab menu)
         const $tabContain = $("#tabContain"),
-              $tabMenuLi = $tabContain.find(".tab_menu li"),
-              $tabWrapLi = $tabContain.find(".tab_wrap li");
+            $tabMenuLi = $tabContain.find(".tab_menu li"),
+            $tabWrapLi = $tabContain.find(".tab_wrap li");
         const $videoMap = $("#videoMap");
 
         // const $tabLine = $tabContain.find(".line i");
@@ -332,17 +372,17 @@ function main() {
             TweenMax.to($tabWrapLi.eq(_index), .3, {display: "block", opacity: 1});
             // TweenMax.to($tabLine, .5, {left: leftDat[_index]});
             $videoMap[0].pause();
-            if ( _index === 1) {
+            if (_index === 1) {
                 $videoMap[0].play();
             }
         });
 
         // section 5 (svg link)
         const $generation = $("#generation"),
-              $svgLink = $generation.find(".svg_wrap a"),
-              $svgSvg = $generation.find(".svg_wrap path"),
-              $inSvg = $generation.find(".in_svg path"),
-              infoLi = $generation.find(".info_wrap li");
+            $svgLink = $generation.find(".svg_wrap a"),
+            $svgSvg = $generation.find(".svg_wrap path"),
+            $inSvg = $generation.find(".in_svg path"),
+            infoLi = $generation.find(".info_wrap li");
 
         $svgLink.mouseenter(function () {
             let _this = $(this),
