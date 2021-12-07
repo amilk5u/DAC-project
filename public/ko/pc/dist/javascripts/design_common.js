@@ -71,7 +71,7 @@ function layout() {
             TweenMax.to($header, 0.01, { y:"0" })
         }
         // 섹션 1을 지났을 때 화면에 보여라
-        if ( winSc > $(".sec1").height() ) {
+        if ( winSc > winH ) {
             if ($header.hasClass("on") === false) {
                 $header.addClass("on");
                 $header.addClass("active");
@@ -87,7 +87,6 @@ function layout() {
 }
 
 function main() {
-    if ($(".container").hasClass("sub1")) {sub1();}
     if ($(".container").hasClass("main")) {main();}
     if ($(".container").hasClass("gallery")) {gallery();}
     if ($(".container").hasClass("household")) {household();}
@@ -125,28 +124,104 @@ function main() {
     motionFun();
 
     function household() {
-        $("header").find("h1 a").eq(0).find("img").attr("src", "./images/common/logo_c.png");
         const $household = $(".household"),
               $selectWrap = $household.find(".select_wrap"),
               $selectLi = $selectWrap.find("li");
 
         const $filterWrap = $household.find(".filter_wrap"),
-              $subBox = $filterWrap.find(".sb_box");
+              $subBox = $filterWrap.find(".sb_box"),
+              $buildingBox = $filterWrap.find(".sb_box.building_box"),
+              $buildingSvg = $buildingBox.find("g");
 
+        const $housePopupCont = $household.find(".pop_container"),
+              $houseRowList = $household.find(".row_list"),
+              $housePopCloseBtn = $household.find(".close_btn"),
+              $PopupPrevBtn = $household.find(".prev_btn"),
+              $PopupNextBtn = $household.find(".next_btn");
+
+        // Logo Color Change
+        $("header").find("h1 a").eq(0).find("img").attr("src", "./images/common/logo_c.png");
+
+        // Filter Click Motion
         $selectLi.on("click",function(){
             let _this = $(this),
                 _index = _this.index();
 
             if ( _this.hasClass("active") === false ) {
                 $selectLi.removeClass("active");
+                TweenMax.to($selectLi.find("span"), .35, { top:"101px", opacity:0, display:"none" });
                 TweenMax.to($subBox, .35, { transform:"translate(0,20px)", opacity:0, display:"none" });
                 _this.addClass("active");
                 TweenMax.to($subBox.eq(_index), .35, { transform:"translate(0,0)", opacity:1, display:"block" });
+                TweenMax.to($selectLi.eq(_index).find("span"), .35, { top:"81px", opacity:1, display:"block" });
+                // TweenMax.to($(".dim"), .2, { display:"block", opacity:1 });
             } else {
                 _this.removeClass("active");
                 TweenMax.to($subBox, .35, { transform:"translate(0,20px)", opacity:0, display:"none" });
+                TweenMax.to($selectLi.find("span"), .35, { top:"101px", opacity:0, display:"none" });
             }
         });
+
+        $(".sec1").on("click",function(){
+            if ( $selectLi.hasClass("active")  ) {
+                console.log("ㅁㅁㅁㅁ");
+            }
+        });
+
+
+        // Building Svg Click Active
+        $buildingSvg.on("click",function(){
+            let _this = $(this),
+                _index = _this.index();
+            _this.attr("class","active");
+            // polygon 의 color 색상이 밑에 것과 같을 때
+            if ( _this.find("polygon").css("fill") === "rgb(168, 131, 91)") {
+                _this.attr("class","");
+            }
+        });
+
+        // Popup Click Open / Close
+        $houseRowList.on("click",function(){
+            TweenMax.to($housePopupCont, 1, { width:"1400px",ease: Power2.easeOut })
+            TweenMax.to($(".dim"), 1, { display:"block", opacity:1 });
+        });
+        $housePopCloseBtn.on("click",function(){
+            TweenMax.to($housePopupCont, 1, { width:0,ease: Power2.easeOut })
+            TweenMax.to($(".dim"), .2, { display:"none", opacity:0 });
+        });
+        $(".dim").on("click",function(){
+            TweenMax.to($housePopupCont, 1, { width:0,ease: Power2.easeOut })
+            TweenMax.to($(".dim"), .2, { display:"none", opacity:0 });
+            // filter click
+            // $selectLi.removeClass("active");
+            // TweenMax.to($subBox, .35, { transform:"translate(0,20px)", opacity:0, display:"none" });
+            // TweenMax.to($selectLi.find("span"), .35, { top:"101px", opacity:0, display:"none" });
+        });
+
+
+        let slideB = false,
+            imageIdx = 0;
+        const $roomImg = $(".room_img");
+        let $roomImgLength = $roomImg.length;
+
+        $PopupNextBtn.on("click", function () {
+            if (imageIdx < $roomImgLength-1) {
+                imageIdx++;
+            }
+            popupPlay(imageIdx);
+        });
+        $PopupPrevBtn.on("click", function () {
+            if (imageIdx > 0) {
+                imageIdx--;
+            }
+            popupPlay(imageIdx);
+        });
+
+        function popupPlay(Idx) {
+            console.log(Idx)
+            TweenMax.to($roomImg, .2, { display:"none", opacity:0});
+            TweenMax.to($roomImg.eq(Idx), .5, { display:"block", opacity:1});
+        }
     }
 
     function gallery() {
@@ -160,17 +235,18 @@ function main() {
             grabCursor: true,
         });
 
-        // gallery logo 변경
+        // Logo Color Change
         $("header").find("h1 a").eq(0).find("img").attr("src", "./images/common/logo_c.png");
 
-        const $slidePopup = $("#slidePopup"),
+        const $galleryPopContainer = $gallery.find(".pop_container");
+        const $slidePopup = $gallery.find("#slidePopup"),
             $imgSlideWrap = $slidePopup.find(".img_wrap"),
             $popClose = $slidePopup.find(".pop_close");
-        const $gallerySlide = $(".gallery_slide"),
-              SlideCursor = $(".cursor_item");
+        const $gallerySlide = $gallery.find(".gallery_slide"),
+              SlideCursor = $gallery.find(".cursor_item");
         let _slideNum = 0,
             PopMotion = false;
-        const $popupWrap = $(".popup_wrap");
+        const $galleryPopupWrap = $gallery.find(".popup_wrap");
         let $activeSlide;
 
         $slidePopup.on("mousewheel", function (e) {
@@ -199,7 +275,7 @@ function main() {
 
         function wheelMotion(popIdx) {
             let _popImgHeight = $imgSlideWrap.height() * (popIdx);
-            TweenMax.to($(".transform_img"), .6, {
+            TweenMax.to($(".gallery .transform_img"), .6, {
                 y: -_popImgHeight,
                 ease: Power1.easeOut,
                 onComplete: () => PopMotion = false
@@ -212,32 +288,32 @@ function main() {
             let _this = $(this),
                 _index = _this.index();
 
-            $popupWrap.removeClass("active");
-            $popupWrap.eq(_index).addClass("active");
-            $activeSlide = $(".popup_wrap.active").find(".txt_wrap li");
+            $galleryPopupWrap.removeClass("active");
+            $galleryPopupWrap.eq(_index).addClass("active");
+            $activeSlide = $(".gallery .popup_wrap.active").find(".txt_wrap li");
             $("#wrap").css("margin", "0 17px 0 0");
             $("body").css("overflow", "hidden");
-            TweenMax.to($(".pop_container"), .7, {width: "100%"})
-            $popupWrap.css("display","none");
-            TweenMax.to($popupWrap.eq(_index), .7, {display: "flex"});
+            TweenMax.to($galleryPopContainer, .7, {width: "100%"})
+            $galleryPopupWrap.css("display","none");
+            TweenMax.to($galleryPopupWrap.eq(_index), .7, {display: "flex"});
             _slideNum = 0;
             $activeSlide.css("display","none");
             TweenMax.to($activeSlide.eq(_slideNum), 1, {display: "block", opacity: 1});
-            TweenMax.to($(".transform_img"), 0.01, {
+            TweenMax.to($(".gallery .transform_img"), 0.01, {
                 y: -$imgSlideWrap.height() * _slideNum,
                 onComplete: () => PopMotion = false
             });
         });
 
         // popup Close
-        $popClose.on("click", function () {
+        $popClose.on("click", () => {
             $("body").css("overflow", "visible");
-            TweenMax.to($(".pop_container"), .7, {width: "0"})
+            TweenMax.to($galleryPopContainer, .7, {width: "0"})
             $("#wrap").css("margin", "0");
         });
 
-        // Mouse Image Change
-        $gallerySlide.mouseenter(function(){
+        function mouseHover (){
+            console.log("슬라이드 입장");
             SlideCursor.addClass("active");
             TweenMax.to(SlideCursor, .2, { display:"block", opacity:1 })
             document.addEventListener("mousemove", function(e){
@@ -245,9 +321,11 @@ function main() {
                 let y = e.pageY;
                 SlideCursor.css("transform","translate(" + x + "px," + y + "px)");
             });
-        });
+        }
+
         // Mouse Image Change
-        $gallerySlide.mouseleave(function(){
+        $("#gallerySlide").mouseenter(mouseHover);
+        $("#gallerySlide").mouseleave(() => {
             SlideCursor.removeClass("active");
             TweenMax.to(SlideCursor, .2, { display:"none", opacity:0 })
         });
@@ -256,7 +334,7 @@ function main() {
     function main() {
         const $sec1 = $(".sec1");
         const $titleSpan = $sec1.find("span"),
-            $titleH1 = $sec1.find("h1");
+              $titleH1 = $sec1.find("h1");
         const introMotion = new TimelineMax();
 
         introMotion
@@ -267,14 +345,6 @@ function main() {
 
         function mouseScrollM() {
             let _pallPos = winSc - secH;
-
-            // 인트로 타이틀 페럴럭스
-            /*if ( winSc > 0 && winSc < winH ) {
-                console.log(winSc)
-                console.log(_pallPos/15)
-                console.log("인트로")
-                // TweenMax.to($(".title_box h1"), 1, {left: _pallPos/15, ease: Power2.easeOut})
-            }*/
 
             // 중간 슬라이드 이미지 페럴럭스
             if (winSc > secH - winH && winSc < secH + winH) {
@@ -295,12 +365,12 @@ function main() {
         let currentIdx = 0;
         let motionControl = false;
         const $slideSection = $("#slideSection"),
-            $txtLi = $slideSection.find(".txt_wrap li");
+              $txtLi = $slideSection.find(".txt_wrap li");
         const slideImg = $slideSection.find(".slide_img"),
-            slideUl = $slideSection.find(".image");
+              slideUl = $slideSection.find(".image");
         const $slideBtn = $(".slide_btn"),
-            $prevBtn = $slideBtn.find(".prev_btn"),
-            $nextBtn = $slideBtn.find(".next_btn");
+              $prevBtn = $slideBtn.find(".prev_btn"),
+              $nextBtn = $slideBtn.find(".next_btn");
         const slideLength = $txtLi.length;
         const $slideVideo = $(".slide_video");
 
@@ -345,9 +415,8 @@ function main() {
             // active
             $slideVideo[Idx].play();
             TweenMax.to($txtLi.eq(Idx), .8, {
-                transform: "translate(0,0)", display: "block", opacity: 1, delay: .5, onComplete: function () {
-                    motionControl = false;
-                }
+                transform: "translate(0,0)", display: "block", opacity: 1, delay: .5,
+                onComplete: ()=> {motionControl = false;}
             });
             TweenMax.staggerTo(slideUl.find("li:eq(" + currentIdx + " )"), 1, {opacity: 1}, .15);
             TweenMax.staggerTo(slideUl.find("li:eq(" + currentIdx + " ) *"), 1.5, {scale: 1}, .15);
@@ -395,17 +464,6 @@ function main() {
                 _index = _this.index();
             infoLi.removeClass("active");
             $inSvg.attr('class', "path" + _index);
-        });
-    }
-
-    function sub1() {
-        $window.scroll(function () {
-            let _pallPos = Math.ceil(winSc / 3);
-            let _pallPos1 = Math.ceil(winSc / 5);
-            TweenMax.to($("body"), .8, {y: -_pallPos/*,ease: Power2.easeOut*/})
-            TweenMax.to($(".box1"), .8, {y: -_pallPos/*,ease: Power2.easeOut, */})
-            TweenMax.to($(".box2"), .8, {y: -_pallPos1/*,ease: Power2.easeOut, */})
-            // TweenMax.to($(".box img"), .5, { y:-_pallPos1/*,ease: Power2.easeOut, */})
         });
     }
 }
