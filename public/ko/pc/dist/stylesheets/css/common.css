@@ -209,7 +209,7 @@ header .generation li .household_link { display: block; width: 180px; padding: 1
 
 header .generation li .household_link:hover { box-shadow: 0 0 20px 20px #8d6438 inset; }
 
-header .menu_wrap { width: 0; height: 100vh; position: relative; overflow: hidden; }
+header .menu_wrap { width: 0; height: 100vh; position: fixed; overflow: hidden; }
 
 header #gnbPopup { height: 100vh; position: absolute; top: 0; background-color: #191d24; z-index: 9; left: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
@@ -953,7 +953,13 @@ caption { width: 1px; height: 1px; overflow: hidden; margin: -1px; }
 	&:before {margin:0 0 0 -640px;}
 	&:after {margin:0 0 0 640px;}
 }*/
-.dim { width: 100%; height: 100vh; position: fixed; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.5); display: none; opacity: 0; z-index: 1; }
+body { background-color: #f1f1f1; }
+
+body.active { padding: 0 17px 0 0; overflow: hidden; }
+
+body.active header { padding: 0 17px 0 0; }
+
+.dim { width: 100%; height: 100vh; position: fixed; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.5); display: none; opacity: 0; z-index: 5; }
 
 .motion-cont { opacity: 0; }
 
@@ -1018,11 +1024,11 @@ caption { width: 1px; height: 1px; overflow: hidden; margin: -1px; }
 
 .swiper-button-prev, .swiper-container-rtl .swiper-button-next { left: 10px; right: auto; }
 
-.swiper-button-prev:after, .swiper-container-rtl .swiper-button-next:after { content: 'prev'; }
+.swiper-button-prev:after, .swiper-container-rtl .swiper-button-next:after { content: "prev"; }
 
 .swiper-button-next, .swiper-container-rtl .swiper-button-prev { right: 10px; left: auto; }
 
-.swiper-button-next:after, .swiper-container-rtl .swiper-button-prev:after { content: 'next'; }
+.swiper-button-next:after, .swiper-container-rtl .swiper-button-prev:after { content: "next"; }
 
 .swiper-button-next.swiper-button-white, .swiper-button-prev.swiper-button-white { --swiper-navigation-color:#ffffff; }
 

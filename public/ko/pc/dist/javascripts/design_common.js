@@ -43,22 +43,26 @@ function layout() {
     $gnbBtn.on("click", function(){
         let _this = $(this);
         if ( _this.hasClass("active") ) {
+            $("body").removeClass("active");
             _this.removeClass("active");
             TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
             TweenMax.to($dim, .2, { display:"none", opacity:0 });
         } else {
+            $("body").addClass("active");
             _this.addClass("active");
             TweenMax.to($(".menu_wrap"), 1, { width:"1370px", opacity:1, ease: Power2.easeOut});
             TweenMax.to($dim, 1, { display:"block", opacity:1 });
         }
     });
     $closeBtn.on("click",function(){
+        $("body").removeClass("active");
         $gnbBtn.removeClass("active");
         TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
         TweenMax.to($dim, .2, { display:"none", opacity:0 });
     });
 
     $dim.on("click",function(){
+        $("body").removeClass("active");
         $gnbBtn.removeClass("active");
         TweenMax.to($(".menu_wrap"), 1, { width:0, ease: Power2.easeOut});
         TweenMax.to($dim, .2, { display:"none", opacity:0 });
@@ -131,7 +135,8 @@ function main() {
         const $filterWrap = $household.find(".filter_wrap"),
               $subBox = $filterWrap.find(".sb_box"),
               $buildingBox = $filterWrap.find(".sb_box.building_box"),
-              $buildingSvg = $buildingBox.find("g");
+              $buildingSvg = $buildingBox.find("g"),
+              $cancelBtn = $household.find(".cancel_btn");
 
         const $housePopupCont = $household.find(".pop_container"),
               $houseRowList = $household.find(".row_list"),
@@ -162,12 +167,11 @@ function main() {
             }
         });
 
-        $(".sec1").on("click",function(){
-            if ( $selectLi.hasClass("active")  ) {
-                console.log("ㅁㅁㅁㅁ");
-            }
+        $cancelBtn.on("click",function(){
+            $selectLi.removeClass("active");
+            TweenMax.to($subBox, .35, { transform:"translate(0,20px)", opacity:0, display:"none" });
+            TweenMax.to($selectLi.find("span"), .35, { top:"101px", opacity:0, display:"none" });
         });
-
 
         // Building Svg Click Active
         $buildingSvg.on("click",function(){
