@@ -38,7 +38,8 @@ function layout() {
           $closeBtn = $header.find(".close_btn"),
           $dim = $(".dim");
 
-    TweenMax.to($header.find("#gnbBtn, #logo, .generation li"), 1.5, {opacity:1, delay:.2});
+    // title motion
+    TweenMax.to($header.find("#gnbBtn, #logo, .generation li"), .5, {opacity: 1});
 
     $gnbBtn.on("click", function(){
         let _this = $(this);
@@ -131,13 +132,11 @@ function main() {
         const $household = $(".household"),
               $selectWrap = $household.find(".select_wrap"),
               $selectLi = $selectWrap.find("li");
-
         const $filterWrap = $household.find(".filter_wrap"),
               $subBox = $filterWrap.find(".sb_box"),
               $buildingBox = $filterWrap.find(".sb_box.building_box"),
               $buildingSvg = $buildingBox.find("g"),
               $cancelBtn = $household.find(".cancel_btn");
-
         const $housePopupCont = $household.find(".pop_container"),
               $houseRowList = $household.find(".row_list"),
               $housePopCloseBtn = $household.find(".close_btn"),
@@ -222,8 +221,7 @@ function main() {
         });
 
         function popupPlay(Idx) {
-            console.log(Idx)
-            TweenMax.to($roomImg, .2, { display:"none", opacity:0});
+            TweenMax.to($roomImg, .35, { display:"none", opacity:0});
             TweenMax.to($roomImg.eq(Idx), .5, { display:"block", opacity:1});
         }
     }
@@ -312,12 +310,11 @@ function main() {
         // popup Close
         $popClose.on("click", () => {
             $("body").css("overflow", "visible");
-            TweenMax.to($galleryPopContainer, .7, {width: "0"})
             $("#wrap").css("margin", "0");
+            TweenMax.to($galleryPopContainer, .7, {width: "0"})
         });
 
         function mouseHover (){
-            console.log("슬라이드 입장");
             SlideCursor.addClass("active");
             TweenMax.to(SlideCursor, .2, { display:"block", opacity:1 })
             document.addEventListener("mousemove", function(e){
@@ -364,7 +361,6 @@ function main() {
             mouseScrollM();
         });
 
-
         // section 3 (slider)
         let currentIdx = 0;
         let motionControl = false;
@@ -398,14 +394,10 @@ function main() {
             }
         });
 
-        $slideVideo[0].play();
+        // $slideVideo[0].play();
         function slidePlay(Idx) {
             $txtLi.removeClass("active");
             $txtLi.eq(Idx).addClass("active");
-            //default
-            $slideVideo.each(function (i) {
-                $slideVideo[i].pause();
-            });
             if (Idx === slideLength - 1) {
                 TweenMax.staggerTo(slideUl.find("li:eq(0)"), 1, {opacity: 0}, .15);
                 TweenMax.staggerTo(slideUl.find("li:eq(0) *"), 1.5, {scale: 1.15}, .15);
@@ -416,8 +408,6 @@ function main() {
             TweenMax.staggerTo(slideUl.find("li:eq(" + (currentIdx - 1) + " ) *"), 1.5, {scale: 1.15}, .15);
             TweenMax.staggerTo(slideUl.find("li:eq(" + (currentIdx + 1) + " ) *"), 1.5, {scale: 1.15}, .15);
 
-            // active
-            $slideVideo[Idx].play();
             TweenMax.to($txtLi.eq(Idx), .8, {
                 transform: "translate(0,0)", display: "block", opacity: 1, delay: .5,
                 onComplete: ()=> {motionControl = false;}
