@@ -95,11 +95,14 @@ function main() {
     if ($(".container").hasClass("main")) {main();}
     if ($(".container").hasClass("gallery")) {gallery();}
     if ($(".container").hasClass("household")) {household();}
+    if ($(".container").hasClass("benefits")) {benefits();}
 
     // content motion
     let $motionCont = $(".motion-cont"); // motion-content
     let _contTopArray = []; // content top array
     let playMotion = winH / 10 * 8; // start
+
+    const $SlideCursor = $(".cursor_item");
 
     $motionCont.each(function (i) {
         let contH = Math.ceil(($motionCont.eq(i).offset().top) - playMotion);
@@ -127,6 +130,40 @@ function main() {
         motionFun();
     });
     motionFun();
+
+    function mouseHover (){
+
+
+        $SlideCursor.addClass("active");
+        TweenMax.to($SlideCursor, .2, { display:"block", opacity:1 })
+        document.addEventListener("mousemove", function(e){
+            let x = e.pageX;
+            let y = e.pageY;
+            $SlideCursor.css("transform","translate(" + x + "px," + y + "px)");
+        });
+    }
+
+
+    function benefits() {
+        // Logo Color Change
+        $("header").find("h1 a").eq(0).find("img").attr("src", "./images/common/logo_c.png");
+
+        const $benefits = $(".benefits");
+
+        const benefitsSlider = new Swiper("#benefitsSlide", {
+            slidesPerView: "auto",
+            spaceBetween: 75,
+            grabCursor: true,
+        });
+
+        // Mouse Image Change
+        $("#benefitsSlide").mouseenter(mouseHover);
+        $("#benefitsSlide").mouseleave(() => {
+            $SlideCursor.removeClass("active");
+            TweenMax.to($SlideCursor, .2, { display:"none", opacity:0 })
+        });
+    }
+
 
     function household() {
         const $household = $(".household"),
@@ -244,8 +281,8 @@ function main() {
         const $slidePopup = $gallery.find("#slidePopup"),
             $imgSlideWrap = $slidePopup.find(".img_wrap"),
             $popClose = $slidePopup.find(".pop_close");
-        const $gallerySlide = $gallery.find(".gallery_slide"),
-              SlideCursor = $gallery.find(".cursor_item");
+        const $gallerySlide = $gallery.find(".gallery_slide");
+
         let _slideNum = 0,
             PopMotion = false;
         const $galleryPopupWrap = $gallery.find(".popup_wrap");
@@ -314,21 +351,11 @@ function main() {
             TweenMax.to($galleryPopContainer, .7, {width: "0"})
         });
 
-        function mouseHover (){
-            SlideCursor.addClass("active");
-            TweenMax.to(SlideCursor, .2, { display:"block", opacity:1 })
-            document.addEventListener("mousemove", function(e){
-                let x = e.pageX;
-                let y = e.pageY;
-                SlideCursor.css("transform","translate(" + x + "px," + y + "px)");
-            });
-        }
-
         // Mouse Image Change
         $("#gallerySlide").mouseenter(mouseHover);
         $("#gallerySlide").mouseleave(() => {
-            SlideCursor.removeClass("active");
-            TweenMax.to(SlideCursor, .2, { display:"none", opacity:0 })
+            $SlideCursor.removeClass("active");
+            TweenMax.to($SlideCursor, .2, { display:"none", opacity:0 })
         });
     }
 
