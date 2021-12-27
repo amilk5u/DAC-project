@@ -903,7 +903,7 @@ footer ul span:first-child { padding: 0; }
 
 .household #housePopup .close_btn:hover:after { -webkit-transform: translate(-50%, -50%) rotate(90deg); -moz-transform: translate(-50%, -50%) rotate(90deg); -ms-transform: translate(-50%, -50%) rotate(90deg); -o-transform: translate(-50%, -50%) rotate(90deg); transform: translate(-50%, -50%) rotate(90deg); }
 
-.benefits { width: 100%; min-width: 1280px; background-color: #191d24; overflow-x: hidden; }
+.benefits { width: 100%; min-width: 1280px; background-color: #191d24; overflow: hidden; }
 
 .benefits .sec1 { min-width: 1180px; max-width: 1680px; padding: 308px 50px 0; margin: 0 auto; display: flex; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
@@ -923,7 +923,7 @@ footer ul span:first-child { padding: 0; }
 
 .benefits .sec1 .img_wrap img { position: absolute; }
 
-.benefits .sec2 { padding: 0 0 210px; }
+.benefits .sec2 { padding: 0 0 210px; overflow: hidden; }
 
 .benefits .sec2 #benefitsSlide { width: 1580px; margin: 0 auto; overflow: visible; position: relative; padding: 0 0 0 45px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
